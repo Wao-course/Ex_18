@@ -1,93 +1,191 @@
-# Ex_18
+# Training exercise 1 - Fundamentals
+
+## Concepts 'n' parts
+### Discussion and description
+
+From a conceptual point of view, describe what each the below parts are.
+
+- Pod/Deployments
+- Services
+- Ingress
+- Labels
+- Namespaces
+
+### Diagram
+
+Create a diagram and depict each of the previous mentioned parts and how they are related. 
 
 
+# Training exercise 2 - Single Application
+## Intro
 
-## Getting started
+In the exercise in the previous lecture, we utilized the imperitive style. Its
+relatively simple and gets the job done. However using the desclarative style
+using yaml files provides for a better approach both in terms of overview
+describing the setup and ensuring that the description is versionen.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The goal of the exercise is to _nginxdemos/hello_, again as used in the previous
+lecture, however this time you will write the needed yaml files such that upon
+completion of the exercise you will be able to go to the web page
+http://mycluster.my/hello and access it.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Do note that the associated slides describe a similar setup in-depth and thus
+seeking inspiration from here is a prudent approach.
 
-## Add your files
+## Deployment
+### Create
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Create a deployment using _nginxdemos/hello_ as the image. The number of
+replicas should 3. Note what the container port is. Have to remember that for
+the next exercise.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.au.dk/wao-exercises1/ex_18.git
-git branch -M main
-git push -uf origin main
-```
+#### Things to remember and heed
 
-## Integrate with your tools
+- Specifying _kind_ and _spec_
+- What are labels for?
+- What is the difference between _Deployment_ and _Pod_?
+- Where do you find the _Pod_ specification?
+- How do you denote the cobling between the two and why is this particular important?
 
-- [ ] [Set up project integrations](https://gitlab.au.dk/wao-exercises1/ex_18/-/settings/integrations)
 
-## Collaborate with your team
+### Apply
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Use kubectl to apply the file content with your newly created _Deployment_.
 
-## Test and Deploy
+### Accessing
 
-Use the built-in continuous integration in GitLab.
+Using _OpenLens_, select your local cluster and find the _Deployment_. In this
+section you will find the _Pods_ associated. Click and find the option to
+_port-forward_. 
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Verify using your web browser that you in fact have access to the newly created
+_Pod_.
 
-***
+How many of the _Pods_ do you have access to at a time, when utilizing this approach?
 
-# Editing this README
+## Service
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Create
 
-## Suggestions for a good README
+The next step is obviously creating a service to access our _Deployment_ and thus our _Pods_. 
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+#### Things to remember and heed
 
-## Name
-Choose a self-explaining name for your project.
+- Specifying _kind_ and _spec_
+- How do you specify which _Pod_ it actually handles?
+- Why is the _ports_ very important - e.g. what does it do?
+- Which _type_ did you select? Which is default?
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### Apply
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Use kubectl to apply the file content with your newly created _Service_.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Accessing
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+This time, while using _OpenLens_, find the "Section" called "Services" and
+_port-forward_ to the service.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Ingress
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Prepare your host machine ...
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+#### Installation
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+As stated in the exercise from the last exercise, you do _not_ have an ingress
+controller handling incoming requests. This needs to be fixed. Ensure that it's
+your cluster that is currenct.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+There numerous different ways of installing applications or rather objects in
+your cluster. One is _helm_ a package manager done using _helm charts_. _Helm_
+is already installed via _Rancher Desktop_, however the _bitname_ package
+repository needs to be installed. This is where we will install our _nginx_
+server - our _ingress controller_. 
 
-## License
-For open source projects, say how it is licensed.
+First add the _bitnami_ repository
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+> helm repo add bitnami https://charts.bitnami.com/bitnami
+
+Secondly update it, meaning fetch the inventory and thus ensuring that our view is up to date.
+
+> helm repo update
+
+Lastly install the nginx server - e.g. our _ingress controller_. In simplified
+terms, it routes all our incoming "web".
+
+> helm install nginx --create-namespace -n ingress-nginx bitnami/nginx-ingress-controller
+
+#### Ingress hostname
+
+In order for our _Ingress_ controller to work with the hostname http://mycluster.my it has to know it. This can be done either by changing a DNS server or, in a hacky simple way by adding an entry to the file:
+
+- On Windows
+  - _/mnt/c/Windows/System32/drivers/etc/hosts_ (might be c: etc instead and you _must_ be admin!!)
+- On Linux/Mac
+  - _/etc/hosts_
+
+The entry being
+
+> 127.0.0.1 mycluster.my
+
+### Create
+
+Create an _Ingress_ object where the path should be _/hello_.
+
+#### Things to remember and heed
+
+- Specifying _kind_ and _spec_
+- Why is it important to state "Ingress class" in the metadata of the _Ingress_
+  object?
+- Why do you need to specify the hostname? What is it used for and can you think
+  of other siuations where this could be cool?
+- The path is denoted to be _/hello_, this means that its passed on as-is. 
+  - It this always desirable?
+  - Can this be changed and if so how? (just the conclusion)
+- At what port is the cluster @ mycluster.my accessible? Normally it would be _80_, but that is not the case here! 
+  - Why is that and where was this decided?
+  - What is the actual port for _http_?
+
+### Apply
+
+Use kubectl to apply the file content with your newly created _Ingress_.
+
+
+### Accessing
+
+If you have done everything correctly at this point, then opening your browser
+at http://mycluster:8080/hello should direct you to the newly created application via
+the _Ingress_ through the _Service_ unto the(a) _Pod_ itself.
+
+Note that refreshing the page changes a specific detail on the page. Why, what
+happens?
+
+
+# Training exercise 2 - Namespace
+
+## Prepare
+
+Start by removing your existing application ensuring that your cluster is
+somewhat empty.
+
+## Create
+
+Create a yaml file containing the creation of a namespace. Choose some name you
+find fitting.
+
+Add the namespace specifier to each and every kubernetes object you created in the
+previous exercise.
+
+### Apply
+
+Use kubectl to apply the file content with your newly created _Ingress_.
+
+
+### Verify and access
+
+Verify using _OpenLens_ that the objects are placed in the namespace as planned.
+
+
+Access the web again using your browser thus ensuring that the setup still
+works.
