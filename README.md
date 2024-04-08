@@ -198,7 +198,7 @@ Use kubectl to apply the file content with your newly created _Ingress_.
 ### Accessing
 
 If you have done everything correctly at this point, then opening your browser
-at http://mycluster:8080/hello should direct you to the newly created application via
+at http://mycluster.my:8080/hello  should direct you to the newly created application via
 the _Ingress_ through the _Service_ unto the(a) _Pod_ itself.
 
 Note that refreshing the page changes a specific detail on the page. Why, what
@@ -211,18 +211,36 @@ happens?
 
 Start by removing your existing application ensuring that your cluster is
 somewhat empty.
+```bash	
+kubectl delete deployment hello-deployment
+kubectl delete service hello-service
+kubectl delete ingress hello-ingress
+```
+
 
 ## Create
 
 Create a yaml file containing the creation of a namespace. Choose some name you
 find fitting.
 
+```bash	
+kubectl create namespace holy-namespace
+```
+
 Add the namespace specifier to each and every kubernetes object you created in the
 previous exercise.
-
+```yaml
+  namespace: holy-namespace 
+```
 ### Apply
 
 Use kubectl to apply the file content with your newly created _Ingress_.
+```bash
+kubectl apply -f namespace.yml
+kubectl apply -f deployment.yml
+kubectl apply -f service.yml
+kubectl apply -f ingress.yml
+```
 
 
 ### Verify and access
@@ -232,3 +250,5 @@ Verify using _OpenLens_ that the objects are placed in the namespace as planned.
 
 Access the web again using your browser thus ensuring that the setup still
 works.
+# issue 
+- need more explainin on why we forward the port to the service and not the pod 
