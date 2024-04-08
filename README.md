@@ -112,7 +112,9 @@ The next step is obviously creating a service to access our _Deployment_ and thu
 ### Apply
 
 Use kubectl to apply the file content with your newly created _Service_.
-
+```bash	
+kubectl apply -f service.yml
+```
 
 ### Accessing
 
