@@ -173,14 +173,22 @@ Create an _Ingress_ object where the path should be _/hello_.
 - Specifying _kind_ and _spec_
 - Why is it important to state "Ingress class" in the metadata of the _Ingress_
   object?
+  >Specifying the Ingress class ensures that the Ingress controller associated with the specified class processes the Ingress rules. This is crucial in environments where multiple Ingress controllers are deployed, ensuring that the correct controller handles the Ingress configuration. By defining the Ingress class, you can direct traffic to the appropriate controller based on the class name.
+
 - Why do you need to specify the hostname? What is it used for and can you think
   of other siuations where this could be cool?
+  >The hostname is used to match incoming requests to the appropriate Ingress rules based on the requested domain. This allows you to host multiple applications on the same cluster, each accessible via different hostnames. Other situations where this could be useful include setting up virtual hosting for multi-tenant applications or implementing a blue-green deployment strategy with different hostnames for each version.
+
 - The path is denoted to be _/hello_, this means that its passed on as-is. 
   - It this always desirable?
   - Can this be changed and if so how? (just the conclusion)
+
+   > The specified path ("/hello") is passed as-is to the backend service. Whether it's desirable depends on the application's requirements. If the application expects requests to be routed to a specific path, then specifying it is necessary. However, if the application can handle requests at any path, you can use a wildcard path or remove the path specification altogether. To change the path, simply modify the path field in the Ingress rule.
+  
 - At what port is the cluster @ mycluster.my accessible? Normally it would be _80_, but that is not the case here! 
   - Why is that and where was this decided?
   - What is the actual port for _http_?
+    >In this case, the Ingress controller is configured to use a non-standard port for HTTP traffic, it is ``port 57727``. This decision could be made based on security considerations or existing network configurations. The actual port for HTTP traffic is determined by the configuration of the Ingress controller. we can find the configured port in the Ingress controller's configuration or documentation.
 
 ### Apply
 
@@ -195,7 +203,7 @@ the _Ingress_ through the _Service_ unto the(a) _Pod_ itself.
 
 Note that refreshing the page changes a specific detail on the page. Why, what
 happens?
-
+  >Because the NGINX Ingress controller distributes incoming requests among the backend pods, and each refresh may result in a different backend pod being selected to handle the request. As a result, the IP address and hostname of the backend server displayed on the page may change accordingly. This behavior is part of the load balancing and scaling capabilities provided by Kubernetes and the NGINX Ingress controller.
 
 # Training exercise 2 - Namespace
 
