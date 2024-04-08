@@ -6,15 +6,32 @@
 From a conceptual point of view, describe what each the below parts are.
 
 - Pod/Deployments
+  - **Pod:** The smallest deployable units in Kubernetes, consisting of one or more containers, storage resources, a unique network IP, and options defining how the containers should run.
+  - **Deployment**: A higher-level abstraction that manages a set of identical pods, ensuring that they are running and healthy, and providing features for updating and scaling the pods.
 - Services
+ - **Services** provide network connectivity to a set of pods, enabling load balancing and service discovery within a Kubernetes cluster. They allow pods to communicate with each other and with external clients.
+
 - Ingress
+  - **Ingress** exposes HTTP and HTTPS routes from outside the Kubernetes cluster to services within the cluster. It acts as a layer 7 (HTTP/HTTPS) load balancer, allowing inbound traffic to reach the appropriate services based on rules defined by the user.
 - Labels
+  - **Labels** are key-value pairs attached to Kubernetes objects (such as pods, deployments, and services) for identification, selection, and grouping purposes. They provide metadata that can be used for querying and organizing resources.
 - Namespaces
+  - **Namespaces** are virtual clusters within a Kubernetes cluster, used to partition resources and provide isolation between multiple users or teams. They enable logical separation of resources and help in organizing and managing Kubernetes objects.
+
 
 ### Diagram
 
 Create a diagram and depict each of the previous mentioned parts and how they are related. 
+```mermaid	
+graph TD;
+  A[Pods/Deployments] --> B[Services];
+  A --> C[Ingress];
+  A --> D[Labels];
+  A --> E[Namespaces];
+  B --> C;
+  C --> B; 
 
+```
 
 # Training exercise 2 - Single Application
 ## Intro
@@ -45,12 +62,28 @@ the next exercise.
 - What are labels for?
 - What is the difference between _Deployment_ and _Pod_?
 - Where do you find the _Pod_ specification?
+
+  >The specification for Pods can be found within the spec section of Kubernetes YAML manifests. Each Pod specification includes details such as the container image, ports, volumes, and environment variables required for running the containers.
+
 - How do you denote the cobling between the two and why is this particular important?
+  >The coupling between a Deployment and Pods is denoted through labels and selectors. In the Deployment YAML manifest, the selector field specifies a set of labels used to match Pods managed by the Deployment. These labels are also defined within the Pod template. This coupling is important because it enables the Deployment to manage and control a specific set of Pods based on their labels. It allows for dynamic scaling, rolling updates, and easy management of Pod lifecycles. Additionally, labels facilitate service discovery and load balancing by enabling Services to select Pods based on their labels
+
+- What is the difference between _replicas_ and _Pods_?
+  >Replicas refer to the number of identical Pods that should be running at any given time. Pods are the smallest deployable units in Kubernetes, each representing a single instance of an application. Replicas are used to scale the number of Pods up or down based on the desired state defined in the Deployment configuration. By specifying the number of replicas, you can ensure that the desired number of Pods are running to handle incoming traffic and provide high availability.
+
+- What is the difference between _Deployment_ and _Service_?
+  >Deployments manage the lifecycle of Pods, ensuring that a specified number of identical Pods are running and healthy. Services provide network connectivity to a set of Pods, enabling load balancing and service discovery within a Kubernetes cluster. While Deployments manage the creation, scaling, and updating of Pods, Services provide a stable endpoint for accessing the Pods and distributing traffic among them.
+
+
 
 
 ### Apply
 
 Use kubectl to apply the file content with your newly created _Deployment_.
+```bash
+kubectl apply -f deployment.yaml
+```
+
 
 ### Accessing
 
